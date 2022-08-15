@@ -4,6 +4,8 @@
 const mongoose = require('mongoose')
 // import leash sub document to dog schema
 const leashSchema = require('./leash')
+// import comment sub document to dog schema
+const commentSchema = require('./comment')
 
 const { Schema, model } = mongoose
 
@@ -35,8 +37,10 @@ const dogSchema = new Schema(
             enum: ['small', 'medium', 'big'],
             default: 'medium'
         },
-
+        // leash sub document
         leashes: [leashSchema],
+        // comment sub document
+        comments: [commentSchema],
         owner: {
 			type: Schema.Types.ObjectId,
 			ref: 'User'

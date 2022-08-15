@@ -15,8 +15,8 @@ const router = express.Router()
 // we only need three, and we want to set them up using the same conventions as our other routes, which means we might need to refer to those other files to make sure we're using our middleware correctly
 
 // POST -> create a leash
-// POST /leashs/<dog_id>
-router.post('/leashs/:dogId', removeBlanks, (req, res, next) => {
+// POST /leashes/<dog_id>
+router.post('/leashes/:dogId', removeBlanks, (req, res, next) => {
     // get our leash from req.body
     const leash = req.body.leash
     // get our dog's id from req.params.dogId
@@ -28,8 +28,8 @@ router.post('/leashs/:dogId', removeBlanks, (req, res, next) => {
             console.log('this is the dog', dog)
             console.log('this is the leash', leash)
 
-            // push the leash into the dog's leashs array
-            dog.leashs.push(leash)
+            // push the leash into the dog's leashes array
+            dog.leashes.push(leash)
 
             // save the dog
             return dog.save()
@@ -41,8 +41,8 @@ router.post('/leashs/:dogId', removeBlanks, (req, res, next) => {
 })
 
 // UPDATE a leash
-// PATCH /leashs/<dog_id>/<leash_id>
-router.patch('/leashs/:dogId/:leashId', requireToken, removeBlanks, (req, res, next) => {
+// PATCH /leashes/<dog_id>/<leash_id>
+router.patch('/leashes/:dogId/:leashId', requireToken, removeBlanks, (req, res, next) => {
     // get the leash and the dog ids saved to variables
     const dogId = req.params.dogId
     const leashId = req.params.leashId
@@ -52,7 +52,7 @@ router.patch('/leashs/:dogId/:leashId', requireToken, removeBlanks, (req, res, n
         .then(handle404)
         .then(dog => {
             // single out the leash (.id is a subdoc method to find something in an array of subdocs)
-            const theLeash = dog.leashs.id(leashId)
+            const theLeash = dog.leashes.id(leashId)
             // make sure the user sending the request is the owner
             requireOwnership(req, dog)
             // update the leash with a subdocument method
@@ -66,7 +66,7 @@ router.patch('/leashs/:dogId/:leashId', requireToken, removeBlanks, (req, res, n
 
 // DELETE a leash
 // DELETE /leashs/<dog_id>/<leash_id>
-router.delete('/leashs/:dogId/:leashId', requireToken, (req, res, next) => {
+router.delete('/leashes/:dogId/:leashId', requireToken, (req, res, next) => {
     // get the leash and the dog ids saved to variables
     const dogId = req.params.dogId
     const leashId = req.params.leashId
@@ -77,7 +77,7 @@ router.delete('/leashs/:dogId/:leashId', requireToken, (req, res, next) => {
         // do stuff with the leash(in this case, delete it)
         .then(dog => {
             // we can get the subdoc the same way as update
-            const theLeash = dog.leashs.id(leashId)
+            const theLeash = dog.leashes.id(leashId)
             // require that the user deleting this leash is the dog's owner
             requireOwnership(req, dog)
             // call remove on the subdoc

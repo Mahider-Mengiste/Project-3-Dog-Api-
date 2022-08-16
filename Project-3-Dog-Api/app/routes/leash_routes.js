@@ -46,7 +46,7 @@ router.patch('/leashes/:dogId/:leashId', requireToken, removeBlanks, (req, res, 
     // get the leash and the dog ids saved to variables
     const dogId = req.params.dogId
     const leashId = req.params.leashId
-
+    console.log( leashId, dogId)
     // find our dog
     Dog.findById(dogId)
         .then(handle404)
